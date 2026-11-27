@@ -1,15 +1,32 @@
-import 'lib/bank_account.dart';
+class BankAccount {
+  double _balance = 0;
+
+  double get balance => _balance;
+
+  void deposit(double amount) {
+    if (amount <= 0) {
+      throw ArgumentError.value(amount, 'amount', 'Must be greater than zero');
+    }
+
+    _balance += amount;
+  }
+
+  void withdraw(double amount) {
+    if (amount <= 0) {
+      throw ArgumentError.value(amount, 'amount', 'Must be greater than zero');
+    }
+    if (amount > _balance) {
+      throw StateError('Insufficient funds');
+    }
+
+    _balance -= amount;
+  }
+}
 
 void main() {
-  final account = BankAccount.empty(ownerName: 'Тимур');
+  final account = BankAccount();
+  account.deposit(100);
+  account.withdraw(30);
 
-  print('Владелец: ${account.ownerName}');
-  print('Начальный баланс: ${account.balance}');
-
-  account.deposit(1000);
-  account.withdraw(250);
-  account.withdraw(1000);
-  account.deposit(0);
-
-  print('Итоговый баланс: ${account.balance}');
+  print('Balance: ${account.balance}');
 }
